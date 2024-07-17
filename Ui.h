@@ -27,15 +27,18 @@ public:
 	bool Initialize();
 	void Draw();
 	void ToggleConsole();
+
 private:
+	int _screenWidth	= 0;
+	int _screenHeight	= 0;
+	unsigned int _VBO	= 0;
+	unsigned int _VAO	= 0;
 	glm::mat4 _orthoMatrix;
-	int _screenWidth = 0;
-	int _screenHeight = 0;
-	Shader _shader;
-	unsigned int _VBO, _VAO = 0;
 	glm::vec2 _quad2D[4];
+	Shader _shader;
 	Console _console;
 	FT_Library _freeFontLib;
+
 	void UpdateConsole();
 	bool InitializeText();
 };
