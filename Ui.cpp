@@ -22,10 +22,12 @@ bool Ui::Initialize() {
     _quad2D[2] = glm::vec2(1, 1);
     _quad2D[3] = glm::vec2(1, 0);
 
+    _console.enabled = false;
     _console.x = 0;
     _console.y = _screenHeight;
     _console.width = _screenWidth;
     _console.height = 50;
+    UpdateConsole();
 
 
     glGenVertexArrays(1, &_VAO);
@@ -67,7 +69,7 @@ bool Ui::InitializeText() {
         return false;
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, 24);
 
     if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
     {
@@ -77,7 +79,7 @@ bool Ui::InitializeText() {
     else
     {
         // set size to load glyphs as
-        FT_Set_Pixel_Sizes(face, 0, 48);
+        FT_Set_Pixel_Sizes(face, 0, 24);
 
         // disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -158,7 +160,8 @@ void Ui::Draw()
 
     _textShader.use();
     _textShader.setMat4("projection", _orthoMatrix);
-    RenderText(_textShader, "This is a sample text", 125.0f, 125.0f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
+    //RenderText(_textShader, "This is a sample text", 125.0f, 125.0f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
+    RenderText(_textShader, "This is a sample text", _console.x, _console.y + 5, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 }
 
 void Ui::ToggleConsole()
@@ -171,14 +174,15 @@ void Ui::UpdateConsole()
 {
     if (_console.enabled) {
         _console.x = 0;
-        _console.y = _screenHeight;
+        _console.y = _screenHeight - 50;
         _console.width = _screenWidth;
         _console.height = 50;
     } else {
         _console.x = 0;
-        _console.y = _screenHeight - 50;
+        _console.y = _screenHeight;
         _console.width = _screenWidth;
         _console.height = 50;
+        
     }
 }
 
