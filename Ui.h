@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <map>
 #include "Shader.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -33,13 +34,20 @@ private:
 	int _screenHeight	= 0;
 	unsigned int _VBO	= 0;
 	unsigned int _VAO	= 0;
+	unsigned int _textVAO = 0;
+	unsigned int _textVBO = 0;
+	std::map<GLchar, Character> _characters;
+
 	glm::mat4 _orthoMatrix;
 	glm::vec2 _quad2D[4];
 	Shader _shader;
+	Shader _textShader;
 	Console _console;
 	FT_Library _freeFontLib;
-
+	
 	void UpdateConsole();
+	void RenderText(Shader& shader, std::string text, float x, float y, float scale, glm::vec3 color);
 	bool InitializeText();
+
 };
 

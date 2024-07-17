@@ -57,6 +57,9 @@ bool Renderer::render()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+
     glm::mat4 view = glm::mat4(1.0f);
     
     glm::mat4 model = glm::mat4(1.0f);
