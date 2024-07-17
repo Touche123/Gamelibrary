@@ -11,14 +11,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Ui.h"
-#include <ft2build.h>
 #include "Input.h"
-#include FT_FREETYPE_H
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 Renderer renderer;
-Ui ui;
+Ui* ui;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
@@ -43,9 +41,12 @@ int main()
 
     renderer.Initialize();
     Input::Initialize(window);
-
-    ui = Ui(SCR_WIDTH, SCR_HEIGHT);
-
+    
+    //ui = Ui(SCR_WIDTH, SCR_HEIGHT);
+    ui = new Ui(SCR_WIDTH, SCR_HEIGHT);
+    if (!ui->Initialize()) {
+        return -1;
+    }
     Shader defaultShader = Shader("assets/shaders/defaultShader.vs", "assets/shaders/defaultShader.fs");
 
     float vertices[] = {
@@ -85,36 +86,11 @@ int main()
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
-
-    FT_Library ft;
-    if (FT_Init_FreeType(&ft))
-    {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-        return -1;
-    }
-
-    FT_Face face;
-    if (FT_New_Face(ft, "assets/fonts/arial.ttf", 0, &face))
-    {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-        return -1;
-    }
-
-    FT_Set_Pixel_Sizes(face, 0, 48);
-
-    if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
-    {
-        std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-        return -1;
-    }
-
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
         
-
         processInput(window);
-        
 
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
@@ -132,7 +108,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        ui.Draw();
+        ui->Draw();
         glfwSwapBuffers(window);
         
     }
@@ -145,16 +121,8 @@ void processInput(GLFWwindow* window)
     if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
         glfwSetWindowShouldClose(window, true);
 
-    if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
-        glfwSetWindowShouldClose(window, true);
-
     if (Input::IsKeyDown(GLFW_KEY_TAB))
-        ui.ToggleConsole();
-    //if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        
-
-    //if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
-        
+        ui->ToggleConsole();
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
