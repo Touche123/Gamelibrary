@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+**/ext/
 
 # Build results
 [Dd]ebug/
