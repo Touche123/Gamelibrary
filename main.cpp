@@ -12,6 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Ui.h"
 #include <ft2build.h>
+#include "Input.h"
 #include FT_FREETYPE_H
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -41,6 +42,8 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     renderer.Initialize();
+    Input::Initialize(window);
+
     ui = Ui(SCR_WIDTH, SCR_HEIGHT);
 
     Shader defaultShader = Shader("assets/shaders/defaultShader.vs", "assets/shaders/defaultShader.fs");
@@ -107,7 +110,11 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
+        
+
         processInput(window);
+        
 
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
@@ -126,9 +133,8 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         ui.Draw();
-
         glfwSwapBuffers(window);
-        glfwPollEvents();
+        
     }
 
     glfwTerminate();
@@ -136,11 +142,19 @@ int main()
 
 void processInput(GLFWwindow* window)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+    if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+        glfwSetWindowShouldClose(window, true);
+
+    if (Input::IsKeyDown(GLFW_KEY_TAB))
         ui.ToggleConsole();
+    //if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        
+
+    //if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+        
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
