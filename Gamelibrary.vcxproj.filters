@@ -65,10 +65,13 @@
     <ClInclude Include="src\physics_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\widget.h">
+    <ClInclude Include="src\ui\widgets\widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\button.h">
+    <ClInclude Include="src\ui\widgets\button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\widgets\textlabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

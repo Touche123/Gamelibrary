@@ -149,9 +149,10 @@
     <ClInclude Include="src\input_system.h" />
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\physics_system.h" />
-    <ClInclude Include="src\ui\button.h" />
+    <ClInclude Include="src\ui\widgets\button.h" />
     <ClInclude Include="src\ui\ui.h" />
-    <ClInclude Include="src\ui\widget.h" />
+    <ClInclude Include="src\ui\widgets\textlabel.h" />
+    <ClInclude Include="src\ui\widgets\widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
