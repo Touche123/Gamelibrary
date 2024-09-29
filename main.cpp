@@ -11,16 +11,16 @@
 #include "src/input_system.h"
 #include "src/physics_system.h"
 
-#include "src/ui/ui.h"
+#include "src/ui/ui_manager.h"
 #include "Input.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 Renderer renderer;
-Ui* ui;
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+UIManager* ui;
+const unsigned int SCR_WIDTH = 1600;
+const unsigned int SCR_HEIGHT = 900;
 
 float deltaTime, currentFrame, lastFrame;
 
@@ -39,7 +39,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -52,7 +52,7 @@ int main()
     renderer.Initialize(SCR_WIDTH, SCR_HEIGHT);
     Input::Initialize(window);
     
-    ui = new Ui(SCR_WIDTH, SCR_HEIGHT);
+    ui = new UIManager(SCR_WIDTH, SCR_HEIGHT);
     if (!ui->Initialize()) {
         return -1;
     }

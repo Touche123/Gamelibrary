@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <map>
+#include "../ui_manager.h"
 
 #include "../../../Shader.h"
 
@@ -18,15 +19,18 @@ struct Character {
 
 class TextLabel {
 public:
-	TextLabel() {
+	TextLabel(UIManager* uiManager) 
+		: uiManager(uiManager)
+	{
 		Initialize();
 		text_shader = Shader("assets/shaders/textShader.vs", "assets/shaders/textShader.fs");
 	}
 
 	void Render(float screenWidth, float screenHeight, std::string text, float x, float y, float scale, glm::vec3 color) {
 		text_shader.use();
-		_orthoMatrix = glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight);
-		text_shader.setMat4("projection", _orthoMatrix);
+		text_shader.setMat4("projection", uiManager->projectionMatrix);
+		//projectionMatrix = glm::ortho(0.0f, (float)_screenWidth, (float)_screenHeight, 0.0f); // Top-left origin
+		//text_shader.setMat4("projection", glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight));
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
@@ -152,10 +156,10 @@ private:
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
+
+		return true;
 	}
-
 	
-
 	float x, y, scale;
 	unsigned int text_vao = 0;
 	unsigned int text_vbo = 0;
@@ -164,5 +168,5 @@ private:
 	std::map<GLchar, Character> _characters;
 	FT_Library _freeFontLib;
 	Shader text_shader;
-	glm::mat4 _orthoMatrix;
+	UIManager* uiManager;
 };

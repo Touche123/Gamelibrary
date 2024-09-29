@@ -1,38 +1,44 @@
-#include "Ui.h"
+#include "ui_manager.h"
 #include <iostream>
 #include "../../Input.h"
 #include <functional>
+#include "widgets/textlabel.h"
 
 
-
-Ui::Ui(int screenWidth, int screenHeight) :
+UIManager::UIManager(int screenWidth, int screenHeight) :
 	button(100, 200, 150, 50, "Play")
 {
 	_screenWidth = screenWidth;
 	_screenHeight = screenHeight;
-
+	UpdateProjectionMatrix();
 	button.SetOnClick([this]() {
 		this->OnPlayButtonClicked();
 		});
 
-	label = new TextLabel();
+	label = new TextLabel(this);
 }
 
-bool Ui::ShouldExit() {
+bool UIManager::ShouldExit() {
 	return _shouldExit;
 }
 
-void Ui::OnPlayButtonClicked() {
+void UIManager::UpdateProjectionMatrix() {
+	projectionMatrix = glm::ortho(0.0f, (float)_screenWidth, (float)_screenHeight, 0.0f); // Top-left origin
+
+	//projectionMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
+}
+
+void UIManager::OnPlayButtonClicked() {
 	std::cout << "Play button clicked!????" << std::endl;
 	_shouldExit = true;
 }
-bool Ui::Initialize() {
+bool UIManager::Initialize() {
 
 	_shader = Shader("assets/shaders/OrthoShader.vs", "assets/shaders/OrthoShader.fs");
 
 	_screenWidth = _screenWidth;
 	_screenHeight = _screenHeight;
-	_orthoMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
+	//projectionMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
 	_quad2D[0] = glm::vec2(0, 1);
 	_quad2D[1] = glm::vec2(0, 0);
 	_quad2D[2] = glm::vec2(1, 1);
@@ -70,10 +76,14 @@ bool Ui::Initialize() {
 	return true;
 }
 
-void Ui::Draw() {
+const glm::mat4& UIManager::GetProjectionMatrix() const {
+	return projectionMatrix;
+}
+
+void UIManager::Draw() {
 	
 	_shader.use();
-	_shader.setMat4("projection", _orthoMatrix);
+	_shader.setMat4("projection", projectionMatrix);
 	glm::mat4 model = glm::mat4(1.0);
 	_shader.setMat4("model", model);
 	glBindVertexArray(_VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
@@ -89,15 +99,17 @@ void Ui::Draw() {
 
 	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", _console.x, _console.y + 5, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 
+	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", 300.f, 300, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
+
 	//DrawMainMenu();
 
 	button.HandleInput(Input::GetMouseX(), Input::GetMouseY(), Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1));
 	button.Draw(_screenWidth, _screenHeight);
 }
 
-void Ui::DrawMainMenu() {
+void UIManager::DrawMainMenu() {
 	_shader.use();
-	_shader.setMat4("projection", _orthoMatrix);
+	_shader.setMat4("projection", projectionMatrix);
 	glm::mat4 model = glm::mat4(1.0);
 	_shader.setMat4("model", model);
 	glBindVertexArray(_VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
@@ -107,22 +119,21 @@ void Ui::DrawMainMenu() {
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-void Ui::ToggleConsole() {
+void UIManager::ToggleConsole() {
 	_console.enabled = !_console.enabled;
 	UpdateConsole();
 }
 
-void Ui::UpdateConsole() {
+void UIManager::UpdateConsole() {
 	if (_console.enabled) {
 		_console.x = 0;
-		_console.y = _screenHeight - 50;
+		_console.y = 0;
 		_console.width = _screenWidth;
 		_console.height = 50;
 	} else {
-		_console.x = 0;
-		_console.y = _screenHeight;
 		_console.width = _screenWidth;
 		_console.height = 50;
-
+		_console.x = 0;
+		_console.y = -_console.height;
 	}
 }
