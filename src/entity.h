@@ -5,12 +5,16 @@
 #include <string>
 #include <unordered_map>
 
-class PositionComponent {
+struct PositionComponent {
 	glm::vec3 position;
 };
 
-class InputComponent {
+struct InputComponent {
 	glm::vec3 movement_direction;
+};
+
+struct MeshComponent {
+	Mesh mesh;
 };
 
 class Entity {

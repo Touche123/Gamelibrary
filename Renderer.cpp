@@ -72,13 +72,15 @@ bool Renderer::Initialize(unsigned int screenWidth, unsigned int screenHeight)
     //glBindVertexArray(0);
 }
 
-bool Renderer::render()
+bool Renderer::render(EntitySystem& entitySystem)
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
+
+    
 
     glm::mat4 view = glm::mat4(1.0f);
     
@@ -89,9 +91,20 @@ bool Renderer::render()
     _defaultShader.use();
     _defaultShader.setMat4("projection", _projection);
     _defaultShader.setMat4("view", view);
-    _defaultShader.setMat4("model", model);
+    
 
-    _mesh.Draw(_defaultShader);
+    for (const auto& entity : entitySystem.GetEntities()) {
+        auto positionComponent = entity.getComponent<PositionComponent>("position");
+        auto meshComponent = entity.getComponent<MeshComponent>("mesh");
+
+        if (positionComponent && meshComponent) {
+            model = glm::translate(model, positionComponent->position);
+            _defaultShader.setMat4("model", model);
+            meshComponent->mesh.Draw(_defaultShader);
+        }
+    }
+
+    //_mesh.Draw(_defaultShader);
     //glBindVertexArray(_VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     //glDrawArrays(GL_TRIANGLES, 0, 3);
     //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

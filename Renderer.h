@@ -1,12 +1,13 @@
 #pragma once
 #include "Shader.h"
 #include "src/mesh.h"
+#include "src/entity_system.h"
 
 class Renderer 
 {
 public:
 	bool Initialize(unsigned int screenWidth, unsigned int screenHeight);
-	bool render();
+	bool render(EntitySystem& entitySystem);
 	bool shutdown();
 
 private:
