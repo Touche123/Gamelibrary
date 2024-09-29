@@ -11,7 +11,7 @@
 #include "src/input_system.h"
 #include "src/physics_system.h"
 
-#include "Ui.h"
+#include "src/ui/ui.h"
 #include "Input.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -124,6 +124,9 @@ void processInput(GLFWwindow* window)
 
     if (Input::IsKeyDown(GLFW_KEY_TAB))
         ui->ToggleConsole();
+
+    if (ui->ShouldExit())
+        glfwSetWindowShouldClose(window, true);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
