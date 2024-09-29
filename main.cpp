@@ -7,7 +7,6 @@
 #include <sstream>
 #include "Shader.h"
 
-
 #include "Ui.h"
 #include "Input.h"
 
@@ -18,6 +17,8 @@ Renderer renderer;
 Ui* ui;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+
+Mesh mesh;
 
 int main()
 {

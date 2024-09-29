@@ -158,8 +158,7 @@ void Ui::Draw()
     _shader.setMat4("model", model);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-    _textShader.use();
-    _textShader.setMat4("projection", _orthoMatrix);
+    
     //RenderText(_textShader, "This is a sample text", 125.0f, 125.0f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
     RenderText(_textShader, "This is a sample text", _console.x, _console.y + 5, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 }
@@ -188,6 +187,9 @@ void Ui::UpdateConsole()
 
 void Ui::RenderText(Shader& shader, std::string text, float x, float y, float scale, glm::vec3 color)
 {
+    _textShader.use();
+    _textShader.setMat4("projection", _orthoMatrix);
+
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
