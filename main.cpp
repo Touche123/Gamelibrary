@@ -7,6 +7,7 @@
 #include <sstream>
 #include "Shader.h"
 #include "src/entity_system.h"
+#include "src/mesh.h"
 
 #include "Ui.h"
 #include "Input.h"
