@@ -8,6 +8,8 @@
 #include "Shader.h"
 #include "src/entity_system.h"
 #include "src/mesh.h"
+#include "src/input_system.h"
+#include "src/physics_system.h"
 
 #include "Ui.h"
 #include "Input.h"
@@ -20,8 +22,12 @@ Ui* ui;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+float deltaTime, currentFrame, lastFrame;
+
 Mesh mesh;
 EntitySystem entity_system;
+InputSystem input_system;
+PhysicsSystem physics_system;
 Entity test_entity;
 
 int main()
@@ -53,6 +59,8 @@ int main()
     auto position_component = std::make_shared<PositionComponent>();
     position_component->position = glm::vec3(1.0f, 1.0f, 0.0f);
     auto mesh_component = std::make_shared<MeshComponent>();
+    auto input_component = std::make_shared<InputComponent>();
+    auto velocity_component = std::make_shared<VelocityComponent>();
 
     Vertex vertices[] = {
     {
@@ -86,15 +94,20 @@ int main()
     
     test_entity.addComponent("position", position_component);
     test_entity.addComponent("mesh", mesh_component);
-
-
+    test_entity.addComponent("input", input_component);
+    test_entity.addComponent("velocity", velocity_component);
     entity_system.AddEntity(test_entity);
 
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
         
+        auto currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
         processInput(window);
+        input_system.update(entity_system);
+        physics_system.update(deltaTime, entity_system);
         renderer.render(entity_system);
         ui->Draw();
         glfwSwapBuffers(window);

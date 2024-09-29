@@ -14,6 +14,10 @@ struct InputComponent {
 	glm::vec3 movement_direction;
 };
 
+struct VelocityComponent {
+	glm::vec3 velocity;
+};
+
 struct MeshComponent {
 	Mesh mesh;
 };

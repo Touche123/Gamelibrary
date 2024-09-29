@@ -1,7 +1,6 @@
 #include "Input.h"
 
 
-
 std::unordered_map<int, bool> Input::keys;
 std::unordered_map<int, bool> Input::keysPressedLastFrame;
 std::unordered_map<int, bool> Input::mouseButtons;
