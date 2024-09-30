@@ -97,9 +97,9 @@ void UIManager::Draw() {
 	//RenderText(_textShader, "This is a sample text", 125.0f, 125.0f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 	//RenderText(_textShader, "This is a sample text", _console.x, _console.y + 5, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 
-	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", _console.x, _console.y + 5, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
+	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", _console.x, _console.y, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 
-	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", 300.f, 300, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
+	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", 0.f, 0.f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 
 	//DrawMainMenu();
 

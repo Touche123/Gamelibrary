@@ -1,8 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <algorithm>
 #include <iostream>
 #include <map>
+#include <string>
 #include "../ui_manager.h"
 
 #include "../../../Shader.h"
@@ -26,11 +28,26 @@ public:
 		text_shader = Shader("assets/shaders/textShader.vs", "assets/shaders/textShader.fs");
 	}
 
+	float CalculateTextHeight(std::string text, float scale) {
+		float maxHeight = 0.0f;
+		for (char c : text) {
+			Character ch = _characters[c];
+			float characterHeight = ch.Size.y * scale; // Calculate character height with scale
+
+			if (characterHeight > maxHeight)
+				maxHeight = characterHeight;
+		}
+		return maxHeight; // Return the maximum height found
+	}
+
 	void Render(float screenWidth, float screenHeight, std::string text, float x, float y, float scale, glm::vec3 color) {
+		float textHeight = CalculateTextHeight(text, scale); // Calculate the height of the text
+		float offsetY = textHeight; // Offset the y position by the height of the text
+
 		text_shader.use();
-		text_shader.setMat4("projection", uiManager->projectionMatrix);
-		//projectionMatrix = glm::ortho(0.0f, (float)_screenWidth, (float)_screenHeight, 0.0f); // Top-left origin
-		//text_shader.setMat4("projection", glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight));
+		//text_shader.setMat4("projection", uiManager->GetProjectionMatrix());
+		//text_shader.setMat4("projection", glm::ortho(0.0f, (float)screenWidth, (float)screenHeight, 0.0f)); // Top-left origin
+		text_shader.setMat4("projection", glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight));
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
@@ -47,7 +64,7 @@ public:
 			Character ch = _characters[*c];
 
 			float xpos = x + ch.Bearing.x * scale;
-			float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+			float ypos = screenHeight - y - (ch.Size.y - ch.Bearing.y) * scale - offsetY;
 
 			float w = ch.Size.x * scale;
 			float h = ch.Size.y * scale;
