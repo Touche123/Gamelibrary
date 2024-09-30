@@ -5,6 +5,7 @@
 #include <map>
 #include "../../Shader.h"
 #include "widgets/Button.h"
+#include "font_manager.h"
 
 class TextLabel;
 
@@ -24,7 +25,9 @@ public:
 	void ToggleConsole();
 	bool ShouldExit();
 	const glm::mat4& GetProjectionMatrix() const;
-	
+
+	FontManager fontManager;
+
 	glm::mat4 projectionMatrix;
 private:
 	int _screenWidth	= 0;

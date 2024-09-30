@@ -15,7 +15,9 @@ UIManager::UIManager(int screenWidth, int screenHeight) :
 		this->OnPlayButtonClicked();
 		});
 
-	label = new TextLabel(this);
+	fontManager.LoadFont("assets/fonts/arial.ttf", 24);
+
+	label = new TextLabel(this, fontManager);
 }
 
 bool UIManager::ShouldExit() {
@@ -99,7 +101,7 @@ void UIManager::Draw() {
 
 	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", _console.x, _console.y, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 
-	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", 0.f, 0.f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
+	label->Render(_screenWidth, _screenHeight, "This is a sample text using label widget", 0.f, 100.f, 1.0f, glm::vec3(1.f, 0.0f, 0.0f));
 
 	//DrawMainMenu();
 

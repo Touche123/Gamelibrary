@@ -149,6 +149,7 @@
     <ClInclude Include="src\input_system.h" />
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\physics_system.h" />
+    <ClInclude Include="src\ui\font_manager.h" />
     <ClInclude Include="src\ui\widgets\button.h" />
     <ClInclude Include="src\ui\ui_manager.h" />
     <ClInclude Include="src\ui\widgets\textlabel.h" />

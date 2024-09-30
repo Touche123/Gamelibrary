@@ -74,5 +74,8 @@
     <ClInclude Include="src\ui\widgets\textlabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ui\font_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
