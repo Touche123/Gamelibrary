@@ -13,17 +13,22 @@ UIManager::UIManager(int screenWidth, int screenHeight) :
 	_screenWidth = screenWidth;
 	_screenHeight = screenHeight;
 	UpdateProjectionMatrix();
-	button.SetOnClick([this]() {
+	button.SetClickCallback([this]() {
 		this->OnPlayButtonClicked();
 		});
 
 	fontManager.LoadFont("assets/fonts/arial.ttf", 24);
 	_characters = fontManager.GetCharacters();
 
+	InitButton();
+
 	TextLabel* label = new TextLabel(0.f, 50.f, "Hello", 24.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	TextLabel* consoleText = new TextLabel(_console.x, _console.y, "Hello", 24.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	AddTextLabel(label);
 	AddTextLabel(consoleText);
+
+	Button* testButton = new Button(100.f, 100.f, 100.f, 50.f, "Click me");
+	buttons.push_back(testButton);
 }
 
 void UIManager::AddTextLabel(TextLabel* label) {
@@ -32,6 +37,36 @@ void UIManager::AddTextLabel(TextLabel* label) {
 
 bool UIManager::ShouldExit() {
 	return _shouldExit;
+}
+
+void UIManager::InitButton() {
+	button_shader = Shader("assets/shaders/OrthoShader.vs", "assets/shaders/OrthoShader.fs");
+
+	_quad2D[0] = glm::vec2(0, 1);
+	_quad2D[1] = glm::vec2(0, 0);
+	_quad2D[2] = glm::vec2(1, 1);
+	_quad2D[3] = glm::vec2(1, 0);
+
+	glGenVertexArrays(1, &button_vao);
+	glGenBuffers(1, &button_vbo);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(button_vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, button_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(_quad2D), _quad2D, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
 }
 
 void UIManager::UpdateProjectionMatrix() {
@@ -63,8 +98,6 @@ bool UIManager::Initialize() {
 	_console.width = _screenWidth;
 	_console.height = 50;
 	UpdateConsole();
-
-	
 
 	glGenVertexArrays(1, &_VAO);
 	glGenBuffers(1, &_VBO);
@@ -172,6 +205,10 @@ void UIManager::Render(float screenWidth, float screenHeight) {
 	for (const auto& label : textLabels) {
 		RenderText(label->GetText(), label->GetPosition(), label->GetFontSize(), label->GetColor());
 	}
+
+	for (const auto& button : buttons) {
+		RenderButton(button);
+	}
 }
 
 void UIManager::RenderText(const std::string& text, const glm::vec2 position, float fontSize, glm::vec3 color) {
@@ -234,5 +271,43 @@ void UIManager::RenderText(const std::string& text, const glm::vec2 position, fl
 }
 
 void UIManager::RenderButton(const Button* button) {
+	//button_shader.use();
+	//button_shader.setMat4("projection", projectionMatrix);
 
+	//glm::vec2 position = button->GetPosition();
+	//glm::vec2 size = button->GetSize();
+
+	//// Set up vertices and draw
+	//float vertices[6][4] = {
+	//	{ position.x, position.y + size.y, 0.0f, 1.0f },
+	//	{ position.x, position.y,       0.0f, 0.0f },
+	//	{ position.x + size.x, position.y, 1.0f, 0.0f },
+
+	//	{ position.x, position.y + size.y, 0.0f, 1.0f },
+	//	{ position.x + size.x, position.y, 1.0f, 0.0f },
+	//	{ position.x + size.x, position.y + size.y, 1.0f, 1.0f }
+	//};
+
+	//// Bind the VAO and VBO for the button
+	//glBindVertexArray(button_vao); // _VAO is initialized once in UIManager
+	//glBindBuffer(GL_ARRAY_BUFFER, button_vbo);
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Update vertex data
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//// Draw the button
+	//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	button_shader.use();
+	button_shader.setMat4("projection", projectionMatrix);
+	
+	glm::vec2 position = button->GetPosition();
+	glm::vec2 size = button->GetSize();
+
+	glm::mat4 model = glm::mat4(1.0);
+	model = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 1));
+	model = glm::scale(model, glm::vec3(size.x, size.y, 1));
+
+	button_shader.setMat4("model", model);
+	glBindVertexArray(button_vao);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }

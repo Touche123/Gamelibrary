@@ -3,9 +3,6 @@
 
 class Widget {
 public:
-	float x, y;
-	float width, height;
-
 	Widget () {}
 	Widget(float x, float y, float width, float height)
 		: position(x, y), size(width, height), is_visible(true) { }

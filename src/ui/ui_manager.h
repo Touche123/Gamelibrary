@@ -48,6 +48,7 @@ private:
 	void UpdateConsole();
 	void DrawMainMenu();
 	void UpdateProjectionMatrix();
+	void InitButton();
 
 	std::vector<TextLabel*> textLabels;
 	std::vector<Button*> buttons;
@@ -59,7 +60,12 @@ private:
 
 	unsigned int text_vao = 0;
 	unsigned int text_vbo = 0;
+	unsigned int button_vao = 0;
+	unsigned int button_vbo = 0;
+
+	glm::vec2 quad_2D[4];
 
 	Shader text_shader;
+	Shader button_shader;
 };
 
