@@ -15,7 +15,7 @@ void UIManager::Button1ClickHandler() {
 UIManager::UIManager(int screenWidth, int screenHeight)
 {
 	Container* panel = new Container(100, 100, 300, 300);
-	VerticalLayout* layout = new VerticalLayout();
+	GridLayout* layout = new GridLayout(4);
 	panel->SetLayout(layout);
 
 	Button* button1 = new Button(0, 0, 200, 50, "Click me 1");

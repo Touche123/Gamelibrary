@@ -20,7 +20,7 @@ void UIRenderer::RenderButton(Button* button) {
 }
 
 void UIRenderer::RenderText(TextLabel* textLabel) {
-    RenderTextLabel(textLabel->GetText(), textLabel->GetPosition() + glm::vec2(10.f, 10.f), 1.f);
+    RenderTextLabel(textLabel->GetText(), textLabel->GetPosition() + glm::vec2(0.f, 0.f), 1.f);
 }
 
 void UIRenderer::RenderTextLabel(const std::string& text, const glm::vec2& position, float scale) {

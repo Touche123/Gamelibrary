@@ -14,3 +14,15 @@ class VerticalLayout : public Layout {
 public:
     void ApplyLayout(Container* container, std::vector<Widget*>& children) override;
 };
+
+class HorizontalLayout : public Layout {
+    void ApplyLayout(Container* container, std::vector<Widget*>& children) override;
+};
+
+class GridLayout : public Layout {
+public:
+    GridLayout(int columns);
+    void ApplyLayout(Container* container, std::vector<Widget*>& children) override;
+private:
+    int columns;
+};
