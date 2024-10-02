@@ -7,6 +7,7 @@
 
 #include "../../../Shader.h"
 
+class TextLabel;
 class Button;
 
 class UIRenderer {
@@ -18,6 +19,7 @@ public:
 	void DrawQuad(const glm::vec2& position, const glm::vec2& size);
 	void UpdateProjectionMatrix(float screenWidth, float screenHeight);
 	void RenderButton(Button* button);
+	void RenderText(TextLabel* textLabel);
 	void RenderTextLabel(const std::string& text, const glm::vec2& position, float scale);
 
 private:

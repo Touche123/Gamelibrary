@@ -1,5 +1,6 @@
 #include "uirenderer.h"
 #include "button.h"
+#include "textlabel.h"
 
 UIRenderer::UIRenderer() {
     Initialize();
@@ -16,6 +17,10 @@ void UIRenderer::RenderButton(Button* button) {
     DrawQuad(button->GetPosition(), button->GetSize());
 
     RenderTextLabel(button->GetLabel(), button->GetPosition() + glm::vec2(10.f, 10.f) , 1.f);
+}
+
+void UIRenderer::RenderText(TextLabel* textLabel) {
+    RenderTextLabel(textLabel->GetText(), textLabel->GetPosition() + glm::vec2(10.f, 10.f), 1.f);
 }
 
 void UIRenderer::RenderTextLabel(const std::string& text, const glm::vec2& position, float scale) {

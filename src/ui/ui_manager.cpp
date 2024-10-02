@@ -33,9 +33,12 @@ UIManager::UIManager(int screenWidth, int screenHeight)
 	std::cout << "Button 3 clicked" << std::endl;
 	});
 
+	TextLabel* textlabel = new TextLabel(200, 400, "hejsan");
+
 	panel->AddChild(button1);
 	panel->AddChild(button2);
 	panel->AddChild(button3);
+	panel->AddChild(textlabel);
 
 	AddWidget(panel);
 }

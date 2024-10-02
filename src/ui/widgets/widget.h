@@ -27,20 +27,7 @@ public:
 		return glm::vec2(width, height);
 	}
 
-	//virtual void HandleInput(float mouseX, float mouseY, bool mousePressed) {
-	//	// Check if mouse is inside the widget
-	//	if (mouseX >= position.x && mouseX <= position.x + size.x &&
-	//		mouseY >= position.y && mouseY <= position.y + size.y) {
-	//		if (mousePressed) {
-	//			OnClick();
-	//		}
-	//	}
-	//}
 protected:
 	float x, y, width, height;
 	bool visible;
-
-	//virtual void OnClick() {
-	//	// Implement click behavior in derived classes
-	//}
 };

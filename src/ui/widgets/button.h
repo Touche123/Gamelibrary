@@ -30,19 +30,6 @@ public:
 		}
 	}
 
-	//// Handle input and trigger the OnClick event if needed
-	//void HandleInput(float mouseX, float mouseY, bool mousePressed) override {
-	//	// Check if the mouse is inside the button
-	//	if (mouseX >= position.x && mouseX <= position.x + size.x &&
-	//		mouseY >= position.y && mouseY <= position.y + size.y) {
-	//		if (mousePressed) {
-	//			if (clickCallback) {
-	//				clickCallback();  // Invoke the assigned callback
-	//			}
-	//		}
-	//	}
-	//}
-
 private:
 	std::string label;
 	ClickCallback clickCallback; // Callback for click event
