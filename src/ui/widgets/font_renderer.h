@@ -4,8 +4,11 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <map>
+
+#include "../../../Shader.h"
 
 struct Character {
 	unsigned int TextureID;
@@ -14,36 +17,27 @@ struct Character {
 	unsigned int Advance;
 };
 
-class FontManager {
+class FontRenderer {
 public:
-	FontManager() {
-		if (FT_Init_FreeType(&_freeFontLib)) {
-			std::cerr << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-		}
-	}
+	FontRenderer();
 
-	~FontManager() {
-		FT_Done_FreeType(_freeFontLib);
-	}
+	~FontRenderer();
 
-	bool LoadFont(const std::string& fontPath, unsigned int fontSize) {
-		FT_Face face;
-		if (FT_New_Face(_freeFontLib, fontPath.c_str(), 0, &face)) {
-			std::cerr << "ERROR::FREETYPE: Failed to load font" << std::endl;
-			return false;
-		}
-
-		FT_Set_Pixel_Sizes(face, 0, fontSize);
-		LoadGlyphs(face);
-		FT_Done_Face(face);
-		return true;
-	}
-
-	const std::map<GLchar, Character>& GetCharacters() const { return _characters; }
+	bool LoadFont(const std::string& fontPath, unsigned int fontSize);
+	void RenderText(Shader shader, std::string text, glm::vec2 position, float scale, glm::vec3 color);
+	void UpdateProjectionMatrix(float screenWidth, float screenHeight);
+	const std::map<GLchar, Character>& GetCharacters();
 
 private:
 	FT_Library _freeFontLib;
 	std::map<GLchar, Character> _characters;
+	unsigned int text_vao = 0;
+	unsigned int text_vbo = 0;
+	glm::mat4 projectionMatrix;
+
+	float screenWidth, screenHeigth;
+
+	float CalculateTextHeight(std::string text, float scale);
 
 	void LoadGlyphs(FT_Face face) {
 		if (FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {

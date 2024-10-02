@@ -12,15 +12,18 @@
 #include "src/physics_system.h"
 
 #include "src/ui/ui_manager.h"
+#include "src/ui/widgets/uirenderer.h"
 #include "Input.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 Renderer renderer;
+
 UIManager* ui;
-const unsigned int SCR_WIDTH = 1600;
-const unsigned int SCR_HEIGHT = 900;
+UIRenderer* ui_renderer;
+unsigned int SCR_WIDTH = 1600;
+unsigned int SCR_HEIGHT = 900;
 
 float deltaTime, currentFrame, lastFrame;
 
@@ -53,9 +56,10 @@ int main()
     Input::Initialize(window);
     
     ui = new UIManager(SCR_WIDTH, SCR_HEIGHT);
-    if (!ui->Initialize()) {
+    ui_renderer = new UIRenderer();
+    /*if (!ui->Initialize()) {
         return -1;
-    }
+    }*/
     auto position_component = std::make_shared<PositionComponent>();
     position_component->position = glm::vec3(1.0f, 1.0f, 0.0f);
     auto mesh_component = std::make_shared<MeshComponent>();
@@ -102,6 +106,9 @@ int main()
     {
         glfwPollEvents();
         
+        if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+            ui->ProcessClick(Input::GetMouseX(), Input::GetMouseY());
+
         auto currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -109,7 +116,8 @@ int main()
         input_system.update(entity_system);
         physics_system.update(deltaTime, entity_system);
         renderer.render(entity_system);
-        ui->Draw();
+        ui_renderer->UpdateProjectionMatrix(SCR_WIDTH, SCR_HEIGHT);
+        ui->Render(ui_renderer);
         glfwSwapBuffers(window);
         
     }
@@ -122,10 +130,11 @@ void processInput(GLFWwindow* window)
     if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
         glfwSetWindowShouldClose(window, true);
 
-    if (Input::IsKeyDown(GLFW_KEY_TAB))
-        ui->ToggleConsole();
+    /*if (Input::IsKeyDown(GLFW_KEY_TAB))
+        ui->ToggleConsole(); 
+    */
 
-    if (ui->ShouldExit())
+    if (ui->Exit_Application)
         glfwSetWindowShouldClose(window, true);
 }
 
@@ -136,4 +145,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+
+    SCR_WIDTH = width;
+    SCR_HEIGHT = height;
 }
