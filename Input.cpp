@@ -4,6 +4,8 @@
 std::unordered_map<int, bool> Input::keys;
 std::unordered_map<int, bool> Input::keysPressedLastFrame;
 std::unordered_map<int, bool> Input::mouseButtons;
+std::unordered_map<int, bool> Input::mouseButtonsPressedLastFrame;
+
 double Input::mouseX = 0;
 double Input::mouseY = 0;
 
@@ -30,9 +32,11 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 	if (action == GLFW_PRESS)
 	{
 		mouseButtons[button] = true;
+		mouseButtonsPressedLastFrame[button] = true;
 	} else if (action == GLFW_RELEASE)
 	{
 		mouseButtons[button] = false;
+		mouseButtonsPressedLastFrame[button] = false;
 	}
 }
 
@@ -57,6 +61,19 @@ bool Input::IsKeyDown(int key) {
 bool Input::IsMouseButtonPressed(int button)
 {
 	return mouseButtons[button];
+}
+
+bool Input::IsMouseButtonReleased(int button) {
+	if (mouseButtonsPressedLastFrame[button] == true && mouseButtons[button] == false)
+		return true;
+	else return false;
+}
+
+bool Input::IsMouseButtonDown(int button) {
+	if (mouseButtonsPressedLastFrame[button]) {
+		mouseButtonsPressedLastFrame[button] = false;
+		return true;
+	} return false;
 }
 
 double Input::GetMouseX()

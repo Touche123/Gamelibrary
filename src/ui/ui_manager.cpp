@@ -15,23 +15,35 @@ void UIManager::Button1ClickHandler() {
 UIManager::UIManager(int screenWidth, int screenHeight)
 {
 	Container* panel1 = new Container(100, 100, 300, 300);
+	panel1->SetLayout(new VerticalLayout());
 
 	Button* button1 = new Button(0, 0, 200, 50, "Click me 1");
+	button1->SetPadding(25);
+	button1->SetMargin(5);
+	button1->SetColor({ 1.f, 0.f, 0.f });
+	
+
 	button1->SetClickCallback([this]() {
 		Button1ClickHandler();
 	});
 
 	Button* button2 = new Button(0, 100, 200, 50, "Click me 2");
+	button2->SetPadding(10);
+	button2->SetMargin(15);
 	button2->SetClickCallback([]() {
 		std::cout << "Button 2 clicked" << std::endl;
 	});
 
 	Button* button3 = new Button(0, 200, 200, 50, "Click me 3");
+	button3->SetPadding(10);
+	button3->SetMargin(15);
 	button3->SetClickCallback([]() {
 	std::cout << "Button 3 clicked" << std::endl;
 	});
 
 	TextLabel* textlabel1 = new TextLabel(200, 400, "hejsan");
+	textlabel1->SetPadding(10);
+	textlabel1->SetMargin(10);
 
 	panel1->AddChild(button1);
 	panel1->AddChild(button2);
@@ -78,8 +90,18 @@ void UIManager::Render(UIRenderer* renderer) {
 	}
 }
 
-void UIManager::ProcessClick(float mouseX, float mouseY) {
+void UIManager::Update(float mouseX, float mouseY) {
+
 	for (auto* widget : rootWidgets) {
-		widget->OnClick(mouseX, mouseY);
+		widget->OnMouseOver(mouseX, mouseY);
 	}
+
+	for (auto* widget : rootWidgets) {
+		
+		if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+			widget->OnMouseDown(mouseX, mouseY);
+		else
+			widget->OnMouseOver(mouseX, mouseY);
+	}
+	
 }

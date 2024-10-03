@@ -23,7 +23,7 @@ public:
 
 	void AddWidget(Widget* widget);
 	void Render(UIRenderer* renderer);
-	void ProcessClick(float mouseX, float mouseY);
+	void Update(float mouseX, float mouseY);
 
 	void Button1ClickHandler();
 

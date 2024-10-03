@@ -106,8 +106,7 @@ int main()
     {
         glfwPollEvents();
         
-        if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
-            ui->ProcessClick(Input::GetMouseX(), Input::GetMouseY());
+        ui->Update(Input::GetMouseX(), Input::GetMouseY());
 
         auto currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;

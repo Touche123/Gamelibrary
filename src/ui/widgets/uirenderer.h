@@ -16,7 +16,7 @@ public:
 	~UIRenderer();
 	
 	void Initialize();
-	void DrawQuad(const glm::vec2& position, const glm::vec2& size);
+	void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec3& color);
 	void UpdateProjectionMatrix(float screenWidth, float screenHeight);
 	void RenderButton(Button* button);
 	void RenderText(TextLabel* textLabel);

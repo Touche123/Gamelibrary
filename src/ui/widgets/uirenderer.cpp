@@ -14,9 +14,17 @@ UIRenderer::~UIRenderer() {
 void UIRenderer::RenderButton(Button* button) {
     _buttonShader.use();
 
-    DrawQuad(button->GetPosition(), button->GetSize());
+    if (button->GetIsHovered())
+        DrawQuad(button->GetPosition(), button->GetSize(), {0.f, 0.f, 1.f});
+    else if (button->GetIsDown())
+        DrawQuad(button->GetPosition(), button->GetSize(), { 0.f, 1.f, 0.f });
+    else
+        DrawQuad(button->GetPosition(), button->GetSize(), button->GetColor());
 
-    RenderTextLabel(button->GetLabel(), button->GetPosition() + glm::vec2(10.f, 10.f) , 1.f);
+    
+
+    glm::vec2 paddedPosition = button->GetPosition() + glm::vec2(button->GetPadding(), button->GetPadding());
+    RenderTextLabel(button->GetLabel(), paddedPosition, 1.f);
 }
 
 void UIRenderer::RenderText(TextLabel* textLabel) {
@@ -41,11 +49,15 @@ void UIRenderer::UpdateProjectionMatrix(float screenWidth, float screenHeight) {
     _fontRenderer.UpdateProjectionMatrix(screenWidth, screenHeight);
 }
 
-void UIRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size) {
+void UIRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec3& color) {
     _buttonShader.use();
 
     _buttonShader.setMat4("projection", projectionMatrix);
-    _buttonShader.setVec3("color", glm::vec3(1.f, 0.f, 0.f));
+    _buttonShader.setVec3("color", color);
+    _buttonShader.setVec3("borderColor", glm::vec3(0.f, 1.f, 0.f));
+    _buttonShader.setFloat("borderWidth", 2.f);
+    _buttonShader.setFloat("borderRadius", 5.f);
+    _buttonShader.setVec2("resolution", size);
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position, 0.0f));
@@ -63,10 +75,11 @@ void UIRenderer::InitializeQuad() {
     // Positions: Two triangles that form a rectangle using TRIANGLE_STRIP
     float quadVertices[] = {
         // X, Y (in normalized device coordinates)
-        0.0f, 1.0f,   // Top-left
-        0.0f, 0.0f,   // Bottom-left
-        1.0f, 1.0f,   // Top-right
-        1.0f, 0.0f    // Bottom-right
+        // Positions    // Texture coords
+        0.0f, 1.0f,     0.0f, 1.0f,   // Top-left
+        0.0f, 0.0f,     0.0f, 0.0f,   // Bottom-left
+        1.0f, 1.0f,     1.0f, 1.0f,   // Top-right
+        1.0f, 0.0f,     1.0f, 0.0f    // Bottom-right
     };
 
     // Create and bind the VAO
@@ -79,9 +92,13 @@ void UIRenderer::InitializeQuad() {
     glBindBuffer(GL_ARRAY_BUFFER, _quadVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 
-    // Define the vertex attributes (for the shader input)
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0); // 2 floats per vertex
+    // Define the vertex attributes for position (location = 0 in the vertex shader)
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0); // 2 floats per vertex
     glEnableVertexAttribArray(0);
+
+    // Define the vertex attributes for the texture coordinates (location = 1 in the vertex shader)
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))); // 2 floats per vertex
+    glEnableVertexAttribArray(1);
 
     // Unbind VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);

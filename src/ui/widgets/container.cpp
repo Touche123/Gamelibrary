@@ -33,3 +33,21 @@ void Container::OnClick(float mouseX, float mouseY) {
 		child->OnClick(mouseX, mouseY);
 	}
 }
+
+void Container::OnMouseDown(float mouseX, float mouseY) {
+	for (auto* child : children) {
+		child->OnMouseDown(mouseX, mouseY);
+	}
+}
+
+void Container::OnMouseUp(float mouseX, float mouseY) {
+	for (auto* child : children) {
+		child->OnMouseUp(mouseX, mouseY);
+	}
+}
+
+void Container::OnMouseOver(float mouseX, float mouseY) {
+	for (auto* child : children) {
+		child->OnMouseOver(mouseX, mouseY);
+	}
+}
