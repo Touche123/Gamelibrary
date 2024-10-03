@@ -91,13 +91,9 @@ void UIManager::Render(UIRenderer* renderer) {
 }
 
 void UIManager::Update(float mouseX, float mouseY) {
-
 	for (auto* widget : rootWidgets) {
-		widget->OnMouseOver(mouseX, mouseY);
-	}
-
-	for (auto* widget : rootWidgets) {
-		
+		if (Input::IsMouseButtonReleased(GLFW_MOUSE_BUTTON_1))
+			widget->OnMouseUp(mouseX, mouseY);
 		if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
 			widget->OnMouseDown(mouseX, mouseY);
 		else

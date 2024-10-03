@@ -36,7 +36,6 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 	} else if (action == GLFW_RELEASE)
 	{
 		mouseButtons[button] = false;
-		mouseButtonsPressedLastFrame[button] = false;
 	}
 }
 
@@ -64,9 +63,9 @@ bool Input::IsMouseButtonPressed(int button)
 }
 
 bool Input::IsMouseButtonReleased(int button) {
-	if (mouseButtonsPressedLastFrame[button] == true && mouseButtons[button] == false)
+	if (!mouseButtons[button] && mouseButtonsPressedLastFrame[button])
 		return true;
-	else return false;
+	return false;
 }
 
 bool Input::IsMouseButtonDown(int button) {
@@ -84,4 +83,11 @@ double Input::GetMouseX()
 double Input::GetMouseY()
 {
 	return mouseY;
+}
+
+void Input::EndFrame() {
+	// Reset pressed states for next frame
+	for (auto& pair : mouseButtonsPressedLastFrame) {
+		pair.second = false; // Reset all to false
+	}
 }

@@ -15,6 +15,7 @@ public:
 	static double GetMouseX();
 	static double GetMouseY();
 
+	static void EndFrame();
 private:
 	static std::unordered_map<int, bool> keys;
 	static std::unordered_map<int, bool> keysPressedLastFrame;

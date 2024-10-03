@@ -10,7 +10,7 @@
 #include "src/mesh.h"
 #include "src/input_system.h"
 #include "src/physics_system.h"
-
+#include "Input.h"
 #include "src/ui/ui_manager.h"
 #include "src/ui/widgets/uirenderer.h"
 #include "Input.h"
@@ -118,6 +118,8 @@ int main()
         ui_renderer->UpdateProjectionMatrix(SCR_WIDTH, SCR_HEIGHT);
         ui->Render(ui_renderer);
         glfwSwapBuffers(window);
+
+        Input::EndFrame();
         
     }
 
