@@ -3,6 +3,29 @@
 
 #include "uirenderer.h"
 
+struct Color {
+	float r, g, b, a;
+
+	Color Blend(const Color& other, float factor) const {
+		return {
+			r * (1.0f - factor) + other.r * factor,
+			g * (1.0f - factor) + other.g * factor,
+			b * (1.0f - factor) + other.b * factor,
+			a * (1.0f - factor) + other.a * factor
+		};
+	}
+
+	Color Tint(float factor) const {
+		// Tint the color towards white (increasing brightness)
+		return Blend(Color{ 1.0f, 1.0f, 1.0f, a }, factor);
+	}
+
+	Color Darken(float factor) const {
+		// Darken the color (decreasing brightness)
+		return Blend(Color{ 0.0f, 0.0f, 0.0f, a }, factor);
+	}
+};
+
 class Widget {
 public:
 	Widget(float x, float y, float width, float height)
@@ -38,3 +61,4 @@ protected:
 	float margin; // Space outside the widget border
 	bool visible; 
 };
+

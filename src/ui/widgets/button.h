@@ -21,6 +21,10 @@ public:
 		this->color = color;
 	}
 
+	void SetBorderColor(const glm::vec3& borderColor) {
+		this->borderColor = borderColor;
+	}
+
 	void Render(UIRenderer* renderer) override {
 		if (!IsVisible()) return;
 		renderer->RenderButton(this);
@@ -28,6 +32,7 @@ public:
 
 	std::string GetLabel() { return label; }
 	glm::vec3 GetColor() { return color; }
+	glm::vec3 GetBorderColor() { return borderColor; }
 	bool GetIsHovered() { return isHovered; }
 	bool GetIsDown() { return isDown; }
 
@@ -58,14 +63,11 @@ public:
 private:
 	std::string label;
 	glm::vec3 color;
+	glm::vec3 borderColor;
 	bool isDown;
 	ClickCallback clickCallback; // Callback for click event
 
 	bool IsInside(float mouseX, float mouseY) {
 		return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
-	}
-
-	glm::vec3 TintColor(const glm::vec3& originalColor, float factor) {
-		return glm::clamp(originalColor + factor, 0.0f, 1.0f);
 	}
 };

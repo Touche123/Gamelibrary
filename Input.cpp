@@ -69,10 +69,7 @@ bool Input::IsMouseButtonReleased(int button) {
 }
 
 bool Input::IsMouseButtonDown(int button) {
-	if (mouseButtonsPressedLastFrame[button]) {
-		mouseButtonsPressedLastFrame[button] = false;
-		return true;
-	} return false;
+	return mouseButtons[button];
 }
 
 double Input::GetMouseX()
@@ -87,7 +84,7 @@ double Input::GetMouseY()
 
 void Input::EndFrame() {
 	// Reset pressed states for next frame
-	for (auto& pair : mouseButtonsPressedLastFrame) {
-		pair.second = false; // Reset all to false
+	for (int i = 0; i < 3; ++i) {
+		mouseButtonsPressedLastFrame[i] = mouseButtons[i];
 	}
 }

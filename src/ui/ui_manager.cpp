@@ -20,8 +20,9 @@ UIManager::UIManager(int screenWidth, int screenHeight)
 	Button* button1 = new Button(0, 0, 200, 50, "Click me 1");
 	button1->SetPadding(25);
 	button1->SetMargin(5);
-	button1->SetColor({ 1.f, 0.f, 0.f });
 	
+	button1->SetColor({ 60.f / 255.f, 99.f / 255.f, 130 / 255.f });
+	button1->SetBorderColor(glm::vec3(98.f / 255.f, 163.f / 255.f, 188.f / 255.f));
 
 	button1->SetClickCallback([this]() {
 		Button1ClickHandler();
@@ -30,6 +31,7 @@ UIManager::UIManager(int screenWidth, int screenHeight)
 	Button* button2 = new Button(0, 100, 200, 50, "Click me 2");
 	button2->SetPadding(10);
 	button2->SetMargin(15);
+	button2->SetColor({ 1.f, 0.f, 0.f });
 	button2->SetClickCallback([]() {
 		std::cout << "Button 2 clicked" << std::endl;
 	});
@@ -37,6 +39,7 @@ UIManager::UIManager(int screenWidth, int screenHeight)
 	Button* button3 = new Button(0, 200, 200, 50, "Click me 3");
 	button3->SetPadding(10);
 	button3->SetMargin(15);
+	button3->SetColor({ 1.f, 0.f, 0.f });
 	button3->SetClickCallback([]() {
 	std::cout << "Button 3 clicked" << std::endl;
 	});
@@ -55,16 +58,19 @@ UIManager::UIManager(int screenWidth, int screenHeight)
 	panel2->SetLayout(layout);
 
 	Button* button4 = new Button(0, 0, 200, 50, "Click me 4");
+	button4->SetColor({ 1.f, 0.f, 0.f });
 	button4->SetClickCallback([this]() {
 		Button1ClickHandler();
 		});
 
 	Button* button5 = new Button(0, 100, 200, 50, "Click me 5");
+	button5->SetColor({ 1.f, 0.f, 0.f });
 	button5->SetClickCallback([]() {
 		std::cout << "Button 5 clicked" << std::endl;
 		});
 
 	Button* button6 = new Button(0, 200, 200, 50, "Click me 6");
+	button6->SetColor({ 1.f, 0.f, 0.f });
 	button6->SetClickCallback([]() {
 		std::cout << "Button 6 clicked" << std::endl;
 		});
@@ -94,7 +100,7 @@ void UIManager::Update(float mouseX, float mouseY) {
 	for (auto* widget : rootWidgets) {
 		if (Input::IsMouseButtonReleased(GLFW_MOUSE_BUTTON_1))
 			widget->OnMouseUp(mouseX, mouseY);
-		if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+		if (Input::IsMouseButtonDown(GLFW_MOUSE_BUTTON_1))
 			widget->OnMouseDown(mouseX, mouseY);
 		else
 			widget->OnMouseOver(mouseX, mouseY);

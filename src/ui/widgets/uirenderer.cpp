@@ -14,12 +14,19 @@ UIRenderer::~UIRenderer() {
 void UIRenderer::RenderButton(Button* button) {
     _buttonShader.use();
 
-    if (button->GetIsHovered())
-        DrawQuad(button->GetPosition(), button->GetSize(), {0.f, 0.f, 1.f});
-    else if (button->GetIsDown())
-        DrawQuad(button->GetPosition(), button->GetSize(), { 0.f, 1.f, 0.f });
+    Color originalColor = { button->GetColor().r, button->GetColor().g, button->GetColor().b, 1.0f };
+    Color newColor = originalColor;
+
+    if (button->GetIsHovered() && !button->GetIsDown()) {
+        newColor = originalColor.Darken(0.2f);
+        DrawQuad(button->GetPosition(), button->GetSize(), { newColor.r, newColor.g, newColor.b }, button->GetBorderColor());
+    }
+    else if (button->GetIsDown()) {
+        newColor = originalColor.Tint(0.2f);
+        DrawQuad(button->GetPosition(), button->GetSize(), { newColor.r, newColor.g, newColor.b }, button->GetBorderColor());
+    }
     else
-        DrawQuad(button->GetPosition(), button->GetSize(), button->GetColor());
+        DrawQuad(button->GetPosition(), button->GetSize(), button->GetColor(), button->GetBorderColor());
 
     
 
@@ -49,12 +56,12 @@ void UIRenderer::UpdateProjectionMatrix(float screenWidth, float screenHeight) {
     _fontRenderer.UpdateProjectionMatrix(screenWidth, screenHeight);
 }
 
-void UIRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec3& color) {
+void UIRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec3& color, const glm::vec3& borderColor) {
     _buttonShader.use();
 
     _buttonShader.setMat4("projection", projectionMatrix);
     _buttonShader.setVec3("color", color);
-    _buttonShader.setVec3("borderColor", glm::vec3(0.f, 1.f, 0.f));
+    _buttonShader.setVec3("borderColor", borderColor);
     _buttonShader.setFloat("borderWidth", 2.f);
     _buttonShader.setFloat("borderRadius", 5.f);
     _buttonShader.setVec2("resolution", size);
