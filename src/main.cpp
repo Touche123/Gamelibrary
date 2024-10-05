@@ -1,6 +1,5 @@
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "platform/platform_glfw.h"
 #include "Renderer.h"
 #include <string>
 #include <fstream>
@@ -14,40 +13,25 @@
 #include "ui/ui_manager.h"
 
 #include "testScene..h"
+#include "application.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 Renderer renderer;
-
+Platform* platform = new GLFWPlatform();
 UIManager* ui;
 UIRenderer* ui_renderer;
 unsigned int SCR_WIDTH = 1600;
 unsigned int SCR_HEIGHT = 900;
 
-float deltaTime, currentFrame, lastFrame;
-
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // glfw window creation
-    // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    platform->Init();
+    Application app(platform);
+    
     renderer.Initialize(SCR_WIDTH, SCR_HEIGHT);
-    Input::Initialize(window);
+    Input::Initialize(static_cast<GLFWPlatform*>(platform)->GetWindow());
     
     ui = new UIManager(SCR_WIDTH, SCR_HEIGHT);
     ui_renderer = new UIRenderer();
@@ -55,23 +39,20 @@ int main()
     TestScene testScene;
     testScene.initialize();
 
-    while (!glfwWindowShouldClose(window))
+
+    //app.run();
+
+    while (!glfwWindowShouldClose(static_cast<GLFWPlatform*>(platform)->GetWindow()))
     {
-        glfwPollEvents();
+        platform->PollEvents();
         
+        processInput(static_cast<GLFWPlatform*>(platform)->GetWindow());
         ui->Update(Input::GetMouseX(), Input::GetMouseY());
-
-        auto currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-        processInput(window);
-        testScene.update(deltaTime);
-        
+        testScene.update(static_cast<GLFWPlatform*>(platform)->GetDeltaTime());
         renderer.render(testScene.GetEntitySystem());
-
         ui_renderer->UpdateProjectionMatrix(SCR_WIDTH, SCR_HEIGHT);
         ui->Render(ui_renderer);
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(static_cast<GLFWPlatform*>(platform)->GetWindow());
 
         Input::EndFrame();
     }
