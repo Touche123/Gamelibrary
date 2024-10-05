@@ -155,6 +155,7 @@
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\physics_system.h" />
     <ClInclude Include="src\scene.h" />
+    <ClInclude Include="src\testScene..h" />
     <ClInclude Include="src\ui\widgets\checkbox.h" />
     <ClInclude Include="src\ui\renderer\font_renderer.h" />
     <ClInclude Include="src\ui\widgets\button.h" />

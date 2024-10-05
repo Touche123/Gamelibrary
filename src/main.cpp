@@ -13,6 +13,8 @@
 #include "io/Input.h"
 #include "ui/ui_manager.h"
 
+#include "testScene..h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -24,12 +26,6 @@ unsigned int SCR_WIDTH = 1600;
 unsigned int SCR_HEIGHT = 900;
 
 float deltaTime, currentFrame, lastFrame;
-
-Mesh mesh;
-EntitySystem entity_system;
-InputSystem input_system;
-PhysicsSystem physics_system;
-Entity test_entity;
 
 int main()
 {
@@ -55,50 +51,9 @@ int main()
     
     ui = new UIManager(SCR_WIDTH, SCR_HEIGHT);
     ui_renderer = new UIRenderer();
-    /*if (!ui->Initialize()) {
-        return -1;
-    }*/
-    auto position_component = std::make_shared<PositionComponent>();
-    position_component->position = glm::vec3(1.0f, 1.0f, 0.0f);
-    auto mesh_component = std::make_shared<MeshComponent>();
-    auto input_component = std::make_shared<InputComponent>();
-    auto velocity_component = std::make_shared<VelocityComponent>();
 
-    Vertex vertices[] = {
-    {
-        { 0.5f,  0.5f, 0.0f },  // position (top right)
-        { 0.0f, 0.0f, 1.0f },    // normal
-        { 1.0f, 1.0f }           // texture coordinates
-    },
-    {
-        { 0.5f, -0.5f, 0.0f },  // position (bottom right)
-        { 0.0f, 0.0f, 1.0f },    // normal
-        { 1.0f, 0.0f }           // texture coordinates
-    },
-    {
-        { -0.5f, -0.5f, 0.0f }, // position (bottom left)
-        { 0.0f, 0.0f, 1.0f },    // normal
-        { 0.0f, 0.0f }           // texture coordinates
-    },
-    {
-        { -0.5f,  0.5f, 0.0f }, // position (top left)
-        { 0.0f, 0.0f, 1.0f },    // normal
-        { 0.0f, 1.0f }           // texture coordinates
-    }
-    };
-
-    unsigned int indices[] = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
-    };
-
-    mesh_component->mesh = Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int));
-    
-    test_entity.addComponent("position", position_component);
-    test_entity.addComponent("mesh", mesh_component);
-    test_entity.addComponent("input", input_component);
-    test_entity.addComponent("velocity", velocity_component);
-    entity_system.AddEntity(test_entity);
+    TestScene testScene;
+    testScene.initialize();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -110,17 +65,16 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         processInput(window);
-        input_system.update(entity_system);
-        physics_system.update(deltaTime, entity_system);
-        renderer.render(entity_system);
+        testScene.update(deltaTime);
+        
+        renderer.render(testScene.GetEntitySystem());
+
         ui_renderer->UpdateProjectionMatrix(SCR_WIDTH, SCR_HEIGHT);
         ui->Render(ui_renderer);
         glfwSwapBuffers(window);
 
         Input::EndFrame();
-        
     }
-
     glfwTerminate();
 }
 

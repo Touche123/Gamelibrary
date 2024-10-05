@@ -10,11 +10,11 @@ public:
 	Scene();
 	~Scene();
 
-	void initialize();
+	virtual void initialize();
 
 	void render(float deltaTime);
 
-	void update(float deltaTime);
+	virtual void update(float deltaTime);
 
 	void handleInput(float deltaTime);
 
@@ -24,7 +24,11 @@ public:
 	
 	void setLighting();
 
-private:
+	EntitySystem& GetEntitySystem() { return entity_system; }
+	InputSystem& GetInputSystem() { return input_system; }
+	PhysicsSystem& GetPhysicsSystem() { return physics_system; }
+
+protected:
 	EntitySystem entity_system;
 	InputSystem input_system;
 	PhysicsSystem physics_system;

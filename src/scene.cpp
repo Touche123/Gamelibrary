@@ -8,6 +8,7 @@ Scene::~Scene() {
 }
 
 void Scene::initialize() {
+	
 }
 
 void Scene::render(float deltaTime) {
