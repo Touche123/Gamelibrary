@@ -1,6 +1,6 @@
 #pragma once
-#include "renderer.h"
-#include "scene.h"
+#include "rendering/renderer.h"
+#include "scene/scene.h"
 #include "platform/platform.h"
 
 class Application {

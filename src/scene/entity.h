@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include "mesh.h"
+#include "../mesh.h"
 
 struct PositionComponent {
 	glm::vec3 position;

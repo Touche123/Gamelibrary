@@ -1,11 +1,11 @@
 #include <iostream>
 #include "platform/platform_glfw.h"
-#include "Renderer.h"
+#include "rendering/Renderer.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include "Shader.h"
-#include "entity_system.h"
+#include "scene/entity_system.h"
 #include "mesh.h"
 #include "input_system.h"
 #include "physics_system.h"

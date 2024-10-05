@@ -1,8 +1,8 @@
 #pragma once
 
 #include "entity_system.h"
-#include "input_system.h"
-#include "physics_system.h"
+#include "../input_system.h"
+#include "../physics_system.h"
 
 class Scene {
 public:

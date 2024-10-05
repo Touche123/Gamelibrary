@@ -1,5 +1,5 @@
 #pragma once
-#include "entity_system.h"
+#include "scene/entity_system.h"
 #include "io/Input.h"
 
 class InputSystem {
