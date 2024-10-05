@@ -1,6 +1,7 @@
-#include "uirenderer.h"
-#include "button.h"
-#include "textlabel.h"
+#include "ui_renderer.h"
+#include "../widgets/button.h"
+#include "../widgets/checkbox.h"
+#include "../widgets/textlabel.h"
 
 UIRenderer::UIRenderer() {
     Initialize();
@@ -41,6 +42,11 @@ void UIRenderer::RenderText(TextLabel* textLabel) {
 void UIRenderer::RenderTextLabel(const std::string& text, const glm::vec2& position, float scale) {
     _textShader.use();
     _fontRenderer.RenderText(_textShader, text, position, scale, glm::vec3(1.0f, 1.0f, 1.0f));
+}
+
+void UIRenderer::RenderCheckBox(CheckBox* checkBox) {
+    DrawQuad(checkBox->GetPosition(), checkBox->GetSize(), checkBox->GetBackgroundColor(), checkBox->GetBorderColor());
+    RenderTextLabel(checkBox->GetLabel(), checkBox->GetPosition(), 1.f);
 }
 
 void UIRenderer::Initialize() {

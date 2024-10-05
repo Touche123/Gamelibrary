@@ -6,14 +6,12 @@
 #include <fstream>
 #include <sstream>
 #include "Shader.h"
-#include "src/entity_system.h"
-#include "src/mesh.h"
-#include "src/input_system.h"
-#include "src/physics_system.h"
-#include "Input.h"
-#include "src/ui/ui_manager.h"
-#include "src/ui/widgets/uirenderer.h"
-#include "Input.h"
+#include "entity_system.h"
+#include "mesh.h"
+#include "input_system.h"
+#include "physics_system.h"
+#include "io/Input.h"
+#include "ui/ui_manager.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);

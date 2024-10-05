@@ -1,6 +1,6 @@
 #pragma once
 #include "Shader.h"
-#include "src/entity_system.h"
+#include "entity_system.h"
 
 class Renderer 
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "entity_system.h"
-#include "../Input.h"
+#include "io/Input.h"
 
 class InputSystem {
 public:

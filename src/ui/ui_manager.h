@@ -4,7 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <map>
 #include <vector>
-#include "../../Shader.h"
+#include "../Shader.h"
 #include "widgets/Button.h"
 
 class TextLabel;

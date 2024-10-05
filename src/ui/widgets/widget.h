@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-#include "uirenderer.h"
+#include "../renderer/ui_renderer.h"
 
 struct Color {
 	float r, g, b, a;

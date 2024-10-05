@@ -11,14 +11,14 @@ public:
 	using ClickCallback = std::function<void()>;
 
 	Button(float x, float y, float width, float height, const std::string& label)
-		: Widget(x, y, width, height), label(label), isDown(0), color({ 0.f, 0.f, 0.f }), clickCallback(nullptr) {}
+		: Widget(x, y, width, height), label(label), isDown(0), backgroundColor({ 0.f, 0.f, 0.f }), clickCallback(nullptr) {}
 
 	void SetClickCallback(ClickCallback callback) {
 		clickCallback = callback;
 	}
 
 	void SetColor(const glm::vec3& color) {
-		this->color = color;
+		this->backgroundColor = color;
 	}
 
 	void SetBorderColor(const glm::vec3& borderColor) {
@@ -31,7 +31,7 @@ public:
 	}
 
 	std::string GetLabel() { return label; }
-	glm::vec3 GetColor() { return color; }
+	glm::vec3 GetColor() { return backgroundColor; }
 	glm::vec3 GetBorderColor() { return borderColor; }
 	bool GetIsHovered() { return isHovered; }
 	bool GetIsDown() { return isDown; }
@@ -62,7 +62,7 @@ public:
 
 private:
 	std::string label;
-	glm::vec3 color;
+	glm::vec3 backgroundColor;
 	glm::vec3 borderColor;
 	bool isDown;
 	ClickCallback clickCallback; // Callback for click event

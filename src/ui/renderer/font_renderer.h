@@ -8,7 +8,7 @@
 #include <iostream>
 #include <map>
 
-#include "../../../Shader.h"
+#include "../../Shader.h"
 
 struct Character {
 	unsigned int TextureID;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "../../Input.h"
+#include "../io/Input.h"
 #include <functional>
 #include "widgets/textlabel.h"
 #include "widgets/container.h"
