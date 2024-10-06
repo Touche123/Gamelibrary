@@ -8,6 +8,8 @@
 #include "widgets/container.h"
 #include "widgets/layout.h"
 
+#include <GLFW/glfw3.h>
+
 void UIManager::Button1ClickHandler() {
 	Exit_Application = true;
 }

@@ -8,6 +8,8 @@
 
 class EntitySystem {
 public:
+	EntitySystem() {}
+
 	Entity* getEntityById(int id) {
 		auto it = std::find_if(entities.begin(), entities.end(),
 			[id](const Entity& entity) {

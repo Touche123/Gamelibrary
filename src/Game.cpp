@@ -3,9 +3,20 @@
 
 Game::Game() {
 	engine = new Engine();
-	engine->Init();
+}
 
-	engine->Run();
+void Game::Init() {
+	engine->Init();
+}
+void Game::Run() {
+	while (!engine->ShouldClose()) {
+		engine->Update();
+		engine->Render();
+	}
+}
+
+void Game::SetCurrentScene(Scene* scene) {
+	engine->SetCurrentScene(scene);
 }
 
 Game::~Game() {

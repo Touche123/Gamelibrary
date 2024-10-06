@@ -8,6 +8,7 @@ public:
 	virtual void SwapBuffers() = 0;
 	virtual bool ShouldClose() = 0;
 	virtual void GetWindowSize(int& width, int& height) = 0;
+	virtual float GetDeltaTime() = 0;
 
 protected:
 	int screen_width;

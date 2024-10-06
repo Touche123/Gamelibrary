@@ -45,11 +45,11 @@ public:
 		e.addComponent("mesh", mesh_component);
 		e.addComponent("input", input_component);
 		e.addComponent("velocity", velocity_component);
-		entity_system.AddEntity(e);
+		entity_system->AddEntity(e);
 	}
 
     void update(float deltaTime) override {
-        input_system.update(entity_system);
-        physics_system.update(deltaTime, entity_system);
+        input_system->update(*entity_system);
+        physics_system->update(deltaTime, *entity_system);
     }
 };

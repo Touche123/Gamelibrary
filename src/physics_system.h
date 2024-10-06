@@ -10,6 +10,7 @@ public:
 
 			if (positionComponent && velocityComponent) {
 				positionComponent->position += velocityComponent->velocity * deltaTime;
+				std::cout << "Position X: " << positionComponent->position.x << ", Y: " << positionComponent->position.y << std::endl;
 			}
 		}
 	}

@@ -8,6 +8,7 @@ public:
 	~Game();
 	virtual void Init() = 0;
 	virtual void Run() = 0;
+	virtual void SetCurrentScene(Scene* scene);
 
 protected:
 	Engine* engine;

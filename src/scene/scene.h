@@ -1,10 +1,12 @@
 #pragma once
+#include "../core/defines.h"
 
-#include "entity_system.h"
-#include "../input_system.h"
-#include "../physics_system.h"
+class EntitySystem;
+class InputSystem;
+class PhysicsSystem;
+class Entity;
 
-class Scene {
+class GAMELIBRARY_API Scene {
 public:
 
 	Scene();
@@ -24,14 +26,16 @@ public:
 	
 	void setLighting();
 
-	EntitySystem& GetEntitySystem() { return entity_system; }
-	InputSystem& GetInputSystem() { return input_system; }
-	PhysicsSystem& GetPhysicsSystem() { return physics_system; }
+	void AddEntity(Entity& e);
+
+	EntitySystem& GetEntitySystem() { return *entity_system; }
+	InputSystem& GetInputSystem() { return *input_system; }
+	PhysicsSystem& GetPhysicsSystem() { return *physics_system; }
 
 protected:
-	EntitySystem entity_system;
-	InputSystem input_system;
-	PhysicsSystem physics_system;
+	EntitySystem* entity_system;
+	InputSystem* input_system;
+	PhysicsSystem* physics_system;
 };
 	
 		

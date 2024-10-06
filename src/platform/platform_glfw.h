@@ -12,7 +12,7 @@ public:
 	void SwapBuffers() override;
 	bool ShouldClose() override;
 	void GetWindowSize(int& width, int& height) override;
-	float GetDeltaTime();
+	float GetDeltaTime() override;
 	GLFWwindow* GetWindow() { return window; }
 	~GLFWPlatform() override;
 

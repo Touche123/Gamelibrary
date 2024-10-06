@@ -71,8 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\dev\c++\Gamelibrary\src;$(IncludePath)</IncludePath>
+    <IncludePath>D:\dev\c++\Gamelibrary\ext\glm;D:\dev\c++\Gamelibrary\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\bin\engine\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\engine\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\bin\engine\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -113,6 +115,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Gamelibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)\bin\engine\$(Platform)\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

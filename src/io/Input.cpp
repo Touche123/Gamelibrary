@@ -1,5 +1,5 @@
 #include "Input.h"
-
+#include <GLFW/glfw3.h>
 
 std::unordered_map<int, bool> Input::keys;
 std::unordered_map<int, bool> Input::keysPressedLastFrame;

@@ -1,6 +1,7 @@
 #pragma once
 #include "scene/entity_system.h"
 #include "io/Input.h"
+#include <GLFW/glfw3.h>
 
 class InputSystem {
 public:

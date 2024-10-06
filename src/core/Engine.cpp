@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../platform/platform_glfw.h"
+#include "../scene/entity_system.h"
 
 Engine::Engine() {
 }
@@ -26,11 +27,26 @@ void Engine::Init() {
 	std::cout << "Engine initialized.." << std::endl;
 }
 
-void Engine::Run() {
-	
-	while (!platform->ShouldClose()) {
-		platform->PollEvents();
+void Engine::Update() {
+	platform->PollEvents();
 
-		platform->SwapBuffers();
+	if (currentScene != nullptr) {
+		currentScene->update(platform->GetDeltaTime());
 	}
+}
+
+void Engine::SetCurrentScene(Scene* scene) {
+	currentScene = scene;
+}
+
+void Engine::Render() {
+	platform->SwapBuffers();
+}
+
+bool Engine::ShouldClose() {
+	return platform->ShouldClose();
+}
+
+void Engine::ShutDown() {
+	delete platform;
 }

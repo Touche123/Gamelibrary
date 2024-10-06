@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <core/Engine.h>
+#include <scene/entity.h>
 #include <Game.h>
 
 #include "TestGame.h"
@@ -11,23 +12,65 @@ int main()
 {
     Game* game = new TestGame();
     
+    game->Init();
+
+    Scene* scene = new Scene();
+    Entity* e = new Entity();
+
+    auto position_component = std::make_shared<PositionComponent>();
+    auto velocity_component = std::make_shared<VelocityComponent>();
+    velocity_component->velocity.x = 1;
+    e->addComponent("position", position_component);
+    e->addComponent("velocity", velocity_component);
+
+    scene->AddEntity(*e);
+    
+    game->SetCurrentScene(scene);
+
+    game->Run();
+
     delete game;
-    /*Engine* engine = new Engine();
-    engine->Init();
-
-    engine->Run();
-
-    delete engine;*/
-   
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+//Entity e;
+//auto position_component = std::make_shared<PositionComponent>();
+//position_component->position = glm::vec3(1.0f, 1.0f, 0.0f);
+//auto mesh_component = std::make_shared<MeshComponent>();
+//auto input_component = std::make_shared<InputComponent>();
+//auto velocity_component = std::make_shared<VelocityComponent>();
+//
+//Vertex vertices[] = {
+//{
+//    { 0.5f,  0.5f, 0.0f },  // position (top right)
+//    { 0.0f, 0.0f, 1.0f },    // normal
+//    { 1.0f, 1.0f }           // texture coordinates
+//},
+//{
+//    { 0.5f, -0.5f, 0.0f },  // position (bottom right)
+//    { 0.0f, 0.0f, 1.0f },    // normal
+//    { 1.0f, 0.0f }           // texture coordinates
+//},
+//{
+//    { -0.5f, -0.5f, 0.0f }, // position (bottom left)
+//    { 0.0f, 0.0f, 1.0f },    // normal
+//    { 0.0f, 0.0f }           // texture coordinates
+//},
+//{
+//    { -0.5f,  0.5f, 0.0f }, // position (top left)
+//    { 0.0f, 0.0f, 1.0f },    // normal
+//    { 0.0f, 1.0f }           // texture coordinates
+//}
+//};
+//
+//unsigned int indices[] = {  // note that we start from 0!
+//    0, 1, 3,  // first Triangle
+//    1, 2, 3   // second Triangle
+//};
+//
+//mesh_component->mesh = Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int));
+//
+//e.addComponent("position", position_component);
+//e.addComponent("mesh", mesh_component);
+//e.addComponent("input", input_component);
+//e.addComponent("velocity", velocity_component);
+//entity_system->AddEntity(e);

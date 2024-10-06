@@ -25,6 +25,9 @@ struct MeshComponent {
 class Entity {
 public:
 	friend class EntitySystem;
+
+	Entity() {}
+
 	bool marked_for_removal = false;
 	std::unordered_map<std::string, std::shared_ptr<void>> components;
 
